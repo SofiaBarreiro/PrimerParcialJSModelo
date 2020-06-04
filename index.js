@@ -8,7 +8,9 @@ app.use(bodyParser.json());
 
 app.use(cors(corsOptions));
 
-
+// Crear una aplicación que tenga una página index.html. El código tiene que estar organizado en
+// tres carpetas js, css y img, todo el código JavaScript debe estar en archivos .js y todo el código
+// css debe estar en un archivo externo.
 var personas = [{
   "id": 1,
   "nombre": "Matemática",
