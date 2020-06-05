@@ -17,32 +17,6 @@ window.onload = function () {
 
 
 
-function traerPersonas() {
-
-    var url = "http://localhost:3000/materias";
-    xhr.open('GET', url, true);
-    //   setSpinner('show');
-    xhr.onreadystatechange = manejadorRespuesta;
-
-    xhr.send();
-}
-
-
-function manejadorRespuesta() {
-
-    if (xhr.readyState == 4) {
-
-        if (xhr.status == 200) {
-            materias = JSON.parse(xhr.responseText);
-            armarTabla(materias);
-
-        }
-    }
-
-
-}
-
-
 function armarTabla(materias) {
 
     var thead;
@@ -53,16 +27,12 @@ function armarTabla(materias) {
         var encabezados = ['id', 'nombre', 'cuatrimestre', 'fechaFinal', 'turno'];
         thead.appendChild(tr);
 
-
-
         for (var i in encabezados) {
 
             var th = document.createElement('th');
             var text = document.createTextNode(encabezados[i]);
             th.appendChild(text);
             tr.appendChild(th);
-
-
 
         }
 
@@ -89,6 +59,8 @@ function armarTabla(materias) {
                     abrirFormulario();
 
                     mostrarFormulario(e.target.parentNode.firstChild.textContent);
+
+
                 });
             }
 
@@ -128,58 +100,41 @@ function mostrarFormulario(id) {
 
     for (var i = 0; i < materias.length; i++) {
 
-        for (var j in materias[i]) {
-            if (materias[i][j] == id) {
 
-                personaA = materias[i];
 
-            }
+        if (materias[i].id == id) {
+
+            personaA = materias[i];
 
         }
 
     }
 
 
-    cargarPersonaEnForm(personaA);
+    crearFormulario(personaA);
 
+    crearBotones();
+
+    eventoRadioButton();
+
+    eventosBotones();
+    insertarDatoEnForm(personaA);
+
+}
+
+
+function crearBotones() {
 
     var botonModificar = document.createElement("button");
     botonModificar.setAttribute('id', 'btnModificar');
     botonModificar.setAttribute("type", "button");
     botonModificar.textContent = 'Cambiar';
-    // botonModificar.setAttribute('class', 'btn btn-warning');
 
     var botonEliminar = document.createElement("button");
     botonEliminar.setAttribute('id', 'btnEliminar');
 
     botonEliminar.setAttribute("type", "button");
     botonEliminar.textContent = 'Borrar';
-    // botonEliminar.setAttribute('class', 'btn btn-warning');
-
-
-
-    // botonEliminar.addEventListener("click", () => {
-    //     var persona = modificarTabla('modificar', personaA.id);
-    //     cerrarFormulario();
-    //     borrarTabla();
-    //     eliminarPersona(persona.id);
-    //     traerPersonas();
-    // })
-
-    // botonModificar.addEventListener("click", () => {
-
-    //     var persona = modificarTabla('modificar', personaA.id);
-    //     if (persona != false) {
-
-    //         cerrarFormulario();
-    //         borrarTabla();
-    //         modificarPersona(persona);
-    //         traerPersonas();
-    //     }
-
-    // })
-    form.appendChild(botonModificar);
-    form.appendChild(botonEliminar);
 
 
 
@@ -188,28 +143,19 @@ function mostrarFormulario(id) {
     botonCerrar.textContent = 'Cerrar';
     botonCerrar.setAttribute('id', 'btnCerrar');
 
-    // botonCerrar.setAttribute('class', 'btn btn-warning');
 
-
-    botonCerrar.addEventListener('click', () => {
-        cerrarFormulario();
-    });
+    form.appendChild(botonModificar);
+    form.appendChild(botonEliminar);
     form.appendChild(botonCerrar);
 
-
 }
-// 3)	Al hacer doble click en una fila de la grilla debe mostrarse, 
-// en el centro de la página, una sección donde debe autocompletarse 
-// los datos de la materia. Contendrá un texto para el nombre, 
-// un select para el cuatrimestre (del 1 al 4), un radio para el turno (Mañana o Noche) y un date para la fecha, 
-// un botón para Modificar (verde) y un botón Eliminar (rojo). (El id no debe mostrase al usuario)
 
 
 
-function cargarPersonaEnForm(personaA) {
+function crearFormulario(personaA) {
 
 
-    console.log(personaA);
+
     var form = document.getElementById("form");
 
     for (var key in personaA) {
@@ -231,7 +177,6 @@ function cargarPersonaEnForm(personaA) {
         switch (key) {
             case "cuatrimestre":
                 select.setAttribute('id', "formSelect");
-                console.log(select.textContent);
 
                 uno = document.createElement("option");
                 dos = document.createElement("option");
@@ -273,7 +218,7 @@ function cargarPersonaEnForm(personaA) {
             case 'turno':
                 var fila = document.createElement('tr');
 
-            
+
                 form.appendChild(createRadioButton('Mañana', fila));
                 form.appendChild(createRadioButton('Noche', fila));
 
@@ -298,6 +243,10 @@ function cargarPersonaEnForm(personaA) {
                         dato.style.display = "none";
                     default:
                         dato.placeholder = key;
+
+
+                        // dato.textContent = 
+
                         break;
 
                 }
@@ -305,8 +254,6 @@ function cargarPersonaEnForm(personaA) {
 
                 form.appendChild(dato);
                 break;
-
-
         }
 
 
@@ -315,7 +262,7 @@ function cargarPersonaEnForm(personaA) {
 }
 
 
-function createRadioButton(textoRadio, fila){
+function createRadioButton(textoRadio, fila) {
 
     var radio = document.createElement('input');
     radio.setAttribute('type', 'radio');
@@ -330,14 +277,32 @@ function createRadioButton(textoRadio, fila){
 
     fila.appendChild(labelRadio);
     fila.appendChild(radio);
-    console.log(radio);
     return fila;
+
+}
+function eventoRadioButton() {
+
+    var manana = document.getElementById('Mañana');
+    var noche = document.getElementById('Noche');
+    manana.addEventListener('click', function () {
+
+        manana.checked = true;
+        noche.checked = false;
+
+    });
+    noche.addEventListener('click', function () {
+
+        manana.checked = false;
+        noche.checked = true;
+
+    });
+
 
 }
 
 
 
-function createDateInput(textoFecha){
+function createDateInput(textoFecha) {
 
     var input = document.createElement('input');
     input.setAttribute('type', 'date');
@@ -347,4 +312,252 @@ function createDateInput(textoFecha){
 
     return input;
 
+}
+
+
+
+function eventosBotones() {
+
+    document.getElementById('btnCerrar').addEventListener('click', () => {
+        cerrarFormulario();
+    });
+
+
+
+    document.getElementById('btnEliminar').addEventListener("click", () => {
+        var id = document.getElementById('id').value;
+
+        jsonNuevo = {
+            "id": id
+
+        }
+
+        eliminarPersona(jsonNuevo);
+    });
+
+    document.getElementById('btnModificar').addEventListener("click", () => {
+
+
+
+
+        objectJson = obtenerDatosForm();
+
+        if (objectJson != null) {
+            modificarPersonas(objectJson);
+
+
+        }
+
+
+
+    })
+
+
+}
+function setSpinner(display) {
+
+
+    if (display == "show") {
+
+
+        document.getElementById('spinner').hidden = false;
+
+    }else{
+
+        document.getElementById('spinner').hidden = true;
+
+
+    }
+
+}
+
+
+function obtenerDatosForm() {
+
+    var id = document.getElementById('id').value;
+
+    var nombre = document.getElementById('nombre').value;
+    var cuatrimestre = document.getElementById('formSelect').value;
+    var fechaFinal = document.getElementById('inputFecha').value;
+
+    var check = false;
+    if (document.getElementById('Mañana').checked) {
+
+        var turno = "Mañana";
+
+        check = true;
+    } else {
+
+
+        if (document.getElementById('Noche').checked) {
+
+            var turno = "Noche";
+            check = true;
+
+        } else {
+
+            document.getElementById('Mañana').style.boxShadow = "1 1 1 4px rgb(153, 17, 17)";
+            document.getElementById('Noche').style.boxShadow = "0 0 0 4px rgb(153, 17, 17)";
+
+        }
+
+
+    }
+    if (validarCampos(nombre, fechaFinal) && check == true) {
+
+        objetoJson = {
+            "id": id,
+            "nombre": nombre,
+            "cuatrimestre": cuatrimestre,
+            "fechaFinal": reconvertirFecha(fechaFinal),
+            "turno": turno,
+
+
+        }
+    } else {
+
+        objetoJson = null;
+
+    }
+
+    console.log(objetoJson);
+    return objetoJson;
+
+}
+
+function validarCampos(nombre, fecha) {
+
+
+    var retorno = true;
+    if (nombre.length <= 6) {
+
+        document.getElementById('nombre').style.backgroundColor = "rgb(153, 17, 17)";
+
+        retorno = false;
+
+    }
+
+
+    if (!compararFechas(fecha)) {
+        document.getElementById('inputFecha').style.backgroundColor = "rgb(153, 17, 17)";
+        retorno = false;
+
+
+    }
+
+    return retorno;
+
+
+}
+
+function compararFechas(fecha) {
+
+    var retorno = true;
+
+    var array = fecha.split("-");
+
+    var fechaProxima = new Date(array[0], array[1], array[2]);
+
+    var today = new Date();
+    var hoy = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();//falta arreglar la fecha
+
+    console.log(hoy + fechaProxima);
+
+
+    return retorno;
+
+
+}
+
+
+
+
+function insertarDatoEnForm(personaA) {
+
+    document.getElementById('id').value = personaA.id;
+
+    document.getElementById('nombre').value = personaA.nombre;
+    document.getElementById('formSelect').value = personaA.cuatrimestre;
+    document.getElementById('inputFecha').value = transformarfecha(personaA.fechaFinal);
+
+    if (personaA.turno == 'Mañana') {
+
+        document.getElementById('Mañana').click();
+
+    }
+
+    if (personaA.turno == 'Noche') {
+
+        document.getElementById('Noche').click();
+
+    }
+
+
+    document.getElementById('formSelect').disabled = true;
+
+}
+
+
+function transformarfecha(fecha) {
+    var array = fecha.split('/');
+
+    fechaNueva = array[2] + '-' + array[1] + '-' + array[0];
+
+    return fechaNueva;
+
+}
+
+
+function reconvertirFecha(fecha) {
+
+
+    var array = fecha.split('-');
+
+    fechaNueva = array[2] + '/' + array[1] + '/' + array[0];
+
+    return fechaNueva;
+
+
+}
+function cambiarFila(objectJson) {
+
+
+
+
+    document.querySelectorAll('tr').forEach(function (value, index) {
+
+
+
+
+        if (value.children[0].textContent == objectJson.id) {
+
+            value.children[1].textContent = objectJson.nombre;
+            value.children[3].textContent = objectJson.fechaFinal;
+            value.children[4].textContent = objectJson.cuatrimestre;
+
+
+        }
+
+    });
+
+
+}
+
+
+function eliminarFilaDom(jsonNuevo) {
+
+
+
+    document.querySelectorAll('tr').forEach(function (value, index) {
+
+
+        if (value.children[0].textContent == jsonNuevo.id) {
+
+            tabla.removeChild(value);
+
+
+
+        }
+
+    });
 }

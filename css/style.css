@@ -38,8 +38,7 @@ body {
 #form input[type="text"],
 #form input[type="email"],
 #form input[type="date"],
-#form  select 
-{
+#form select {
     padding: 3px 10px;
     border: 1px solid #f6f6f6;
     border-radius: 3px;
@@ -48,13 +47,15 @@ body {
     text-align: center;
 
 }
+
 #form input[type="text"],
 #form input[type="email"],
-#form input[type="date"]{
+#form input[type="date"] {
 
 
     width: 100%;
 }
+
 #form button {
     padding: 8px 16px;
     border: 1px solid #000;
@@ -66,33 +67,22 @@ body {
     margin: 10px 5px 0px 5px;
 }
 
-#btnModificar{
+#btnModificar {
 
     background-color: rgb(14, 71, 14);
 }
 
-#btnEliminar{
+#btnEliminar {
 
-    background-color:rgb(153, 17, 17);
+    background-color: rgb(153, 17, 17);
 
 }
-#btnCerrar{
+
+#btnCerrar {
 
     background-color: #311111;
 
 }
-/* 
-form table {
-
-    vertical-align: center;
-    margin-left: 250px;
-    margin-top: 70px;
-    background-color: rgba(45, 126, 218, .7);
-    border-radius: 5px;
-    font: center;
-    padding: 30px 20px;
-    position: relative;
-} */
 
 
 
@@ -142,14 +132,17 @@ th {
 
 
 
-/* 
-.show {
-    display: table-cell;
-    vertical-align: middle;
-    margin-left: auto;
-    margin-right: auto;
-}
 
-.hide {
-    display: none;
-} */
+#spinner img{
+
+    display: flex;
+    height: 100%;
+    padding-left: 0 !important;
+  padding-right: 0 !important;
+  width: 100% !important; 
+
+
+
+
+
+}
