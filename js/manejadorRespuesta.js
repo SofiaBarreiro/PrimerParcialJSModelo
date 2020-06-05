@@ -4,7 +4,6 @@ function traerPersonas() {
 
     setSpinner('show');
 
-    document.getElementById('spinner').hidden = false;
 
     var url = "http://localhost:3000/materias";
     xhr.open('GET', url, true);
@@ -22,7 +21,7 @@ function manejadorRespuesta() {
             materias = JSON.parse(xhr.responseText);
 
             armarTabla(materias);
-            // setSpinner();
+            setSpinner();
 
 
         }
@@ -32,7 +31,6 @@ function manejadorRespuesta() {
 
 
 function modificarPersonas(objectJson) {
-    setSpinner('show');
     var url = "http://localhost:3000/editar";
     xhr.open('POST', url, true);
     xhr.setRequestHeader("Content-Type", "application/json");
@@ -51,7 +49,6 @@ function manejadorRespuesta2() {
         if (xhr.status == 200) {
             var respuesta = JSON.parse(xhr.responseText);
             if (respuesta.type == "ok") {
-                cerrarFormulario();
 
                 if (objectJson != null) {
                     cambiarFila(objectJson);
@@ -67,7 +64,6 @@ function manejadorRespuesta2() {
 
 
 function eliminarPersona(objeto) {
-    setSpinner('show');
 
     var url = "http://localhost:3000/eliminar";
     xhr.open('POST', url, true);

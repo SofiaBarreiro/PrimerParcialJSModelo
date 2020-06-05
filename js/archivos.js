@@ -88,7 +88,6 @@ function cerrarFormulario() {
     }
 
 
-    tabla.hidden = false;
     form.hidden = true;
 
 }
@@ -320,6 +319,9 @@ function eventosBotones() {
 
     document.getElementById('btnCerrar').addEventListener('click', () => {
         cerrarFormulario();
+
+        tabla.hidden = false;
+
     });
 
 
@@ -331,6 +333,8 @@ function eventosBotones() {
             "id": id
 
         }
+        cerrarFormulario();
+        setSpinner('show');
 
         eliminarPersona(jsonNuevo);
     });
@@ -343,6 +347,10 @@ function eventosBotones() {
         objectJson = obtenerDatosForm();
 
         if (objectJson != null) {
+
+            cerrarFormulario();
+            setSpinner('show');
+
             modificarPersonas(objectJson);
 
 
@@ -356,15 +364,17 @@ function eventosBotones() {
 }
 function setSpinner(display) {
 
+    body = document.getElementById('body');
 
     if (display == "show") {
 
-
-        document.getElementById('spinner').hidden = false;
+        body.classList.add("showSpinner");
 
     }else{
 
-        document.getElementById('spinner').hidden = true;
+
+        body.classList.remove("showSpinner");
+            tabla.hidden = false;
 
 
     }
@@ -420,7 +430,6 @@ function obtenerDatosForm() {
 
     }
 
-    console.log(objetoJson);
     return objetoJson;
 
 }
@@ -458,10 +467,10 @@ function compararFechas(fecha) {
 
     var fechaProxima = new Date(array[0], array[1], array[2]);
 
-    var today = new Date();
-    var hoy = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();//falta arreglar la fecha
+    var objetoFecha = new Date();
+    var hoy = objetoFecha.getFullYear() + '-' + (objetoFecha.getMonth() + 1) + '-' + objetoFecha.getDate();//falta arreglar la fecha
 
-    console.log(hoy + fechaProxima);
+    // console.log(hoy + fechaProxima);
 
 
     return retorno;
@@ -491,7 +500,6 @@ function insertarDatoEnForm(personaA) {
         document.getElementById('Noche').click();
 
     }
-
 
     document.getElementById('formSelect').disabled = true;
 
@@ -533,7 +541,7 @@ function cambiarFila(objectJson) {
 
             value.children[1].textContent = objectJson.nombre;
             value.children[3].textContent = objectJson.fechaFinal;
-            value.children[4].textContent = objectJson.cuatrimestre;
+            value.children[4].textContent = objectJson.turno;
 
 
         }

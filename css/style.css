@@ -6,8 +6,22 @@
 
 
 body {
+   
+    background-color: rgb(107, 27, 107);
 
-    background-color: white
+}
+
+
+.showSpinner{
+
+
+    background-image: url("../img/Spinner-Preloader-Gif.gif");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+
+
 }
 
 
@@ -133,7 +147,7 @@ th {
 
 
 
-#spinner img{
+#spinner {
 
     display: flex;
     height: 100%;
